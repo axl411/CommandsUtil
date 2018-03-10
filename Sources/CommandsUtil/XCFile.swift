@@ -13,14 +13,14 @@ public struct XCFile {
     public static let xcworkspace = "xcworkspace"
     
     public static func target(in pwd: Folder) -> File? {
-        if let xcFile = xcFile(in: pwd) {
-            return xcFile
-        }
-        
         for folder in pwd.subfolders {
             if let xcFile = xcFile(in: folder) {
                 return xcFile
             }
+        }
+        
+        if let xcFile = xcFile(in: pwd) {
+            return xcFile
         }
         
         return nil

@@ -65,6 +65,8 @@ class XCFileTests: XCTestCase {
         let subDir = try! workingDir.createSubfolder(named: "subDir")
         _ = try! subDir.createFile(named: xcodeprojFileName)
         _ = try! subDir.createFile(named: xcworkspaceFileName)
+        _ = try! workingDir.createFile(named: xcodeprojFileName)
+        _ = try! workingDir.createFile(named: xcworkspaceFileName)
         
         XCTAssertEqual(
             XCFile.target(in: workingDir)!.path,
