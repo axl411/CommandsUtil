@@ -33,44 +33,44 @@ class XCFileTests: XCTestCase {
     }
     
     func testXCFileFindXCodeProjInPWD() {
-        _ = try! workingDir.createFile(named: xcodeprojFileName)
+        _ = try! workingDir.createSubfolder(named: xcodeprojFileName)
         
         XCTAssertEqual(
-            XCFile.target(in: workingDir)!.path,
-            (workingDir.path as NSString).appendingPathComponent(xcodeprojFileName)
+            XCFile.target(in: workingDir)!,
+            (workingDir.path as NSString).appendingPathComponent(xcodeprojFileName).appending("/")
         )
     }
     
     func testXCFileFindXCWorkspaceInPWD() {
-        _ = try! workingDir.createFile(named: xcodeprojFileName)
-        _ = try! workingDir.createFile(named: xcworkspaceFileName)
+        _ = try! workingDir.createSubfolder(named: xcodeprojFileName)
+        _ = try! workingDir.createSubfolder(named: xcworkspaceFileName)
         
         XCTAssertEqual(
-            XCFile.target(in: workingDir)!.path,
-            (workingDir.path as NSString).appendingPathComponent(xcworkspaceFileName)
+            XCFile.target(in: workingDir)!,
+            (workingDir.path as NSString).appendingPathComponent(xcworkspaceFileName).appending("/")
         )
     }
     
     func testXCFileFindXCodeProjInSubfolder() {
         let subDir = try! workingDir.createSubfolder(named: "subDir")
-        _ = try! subDir.createFile(named: xcodeprojFileName)
+        _ = try! subDir.createSubfolder(named: xcodeprojFileName)
         
         XCTAssertEqual(
-            XCFile.target(in: workingDir)!.path,
-            (subDir.path as NSString).appendingPathComponent(xcodeprojFileName)
+            XCFile.target(in: workingDir)!,
+            (subDir.path as NSString).appendingPathComponent(xcodeprojFileName).appending("/")
         )
     }
     
     func testXCFileFindXCWorkspaceInSubfolder() {
         let subDir = try! workingDir.createSubfolder(named: "subDir")
-        _ = try! subDir.createFile(named: xcodeprojFileName)
-        _ = try! subDir.createFile(named: xcworkspaceFileName)
-        _ = try! workingDir.createFile(named: xcodeprojFileName)
-        _ = try! workingDir.createFile(named: xcworkspaceFileName)
+        _ = try! subDir.createSubfolder(named: xcodeprojFileName)
+        _ = try! subDir.createSubfolder(named: xcworkspaceFileName)
+        _ = try! workingDir.createSubfolder(named: xcodeprojFileName)
+        _ = try! workingDir.createSubfolder(named: xcworkspaceFileName)
         
         XCTAssertEqual(
-            XCFile.target(in: workingDir)!.path,
-            (subDir.path as NSString).appendingPathComponent(xcworkspaceFileName)
+            XCFile.target(in: workingDir)!,
+            (subDir.path as NSString).appendingPathComponent(xcworkspaceFileName).appending("/")
         )
     }
     
