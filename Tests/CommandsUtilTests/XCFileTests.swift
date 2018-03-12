@@ -71,6 +71,31 @@ class XCFileTests: XCTestCase {
             (subDir.path as NSString).appendingPathComponent(xcworkspaceFileName)
         )
     }
+
+    func testXCFileFindXCWorkspaceInPWDAndSubfolder() {
+        _ = try! workingDir.createFile(named: xcodeprojFileName)
+        _ = try! workingDir.createFile(named: xcworkspaceFileName)
+        let subDir = try! workingDir.createSubfolder(named: "subDir")
+        _ = try! subDir.createFile(named: xcodeprojFileName)
+        _ = try! subDir.createFile(named: xcworkspaceFileName)
+
+        XCTAssertEqual(
+            XCFile.target(in: workingDir)!.path,
+            (workingDir.path as NSString).appendingPathComponent(xcworkspaceFileName)
+        )
+    }
+
+    func testXCFileFindXCWorkspaceInPWDAndSubfolder2() {
+        _ = try! workingDir.createFile(named: xcodeprojFileName)
+        let subDir = try! workingDir.createSubfolder(named: "subDir")
+        _ = try! subDir.createFile(named: xcodeprojFileName)
+        _ = try! subDir.createFile(named: xcworkspaceFileName)
+
+        XCTAssertEqual(
+            XCFile.target(in: workingDir)!.path,
+            (subDir.path as NSString).appendingPathComponent(xcworkspaceFileName)
+        )
+    }
     
     override
     func tearDown() {

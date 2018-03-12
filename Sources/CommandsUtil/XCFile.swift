@@ -13,28 +13,36 @@ public struct XCFile {
     public static let xcworkspace = "xcworkspace"
     
     public static func target(in pwd: Folder) -> File? {
-        if let xcFile = xcFile(in: pwd) {
-            return xcFile
+        if let xcWorkspace = xcWorkspaceFile(in: pwd) {
+            return xcWorkspace
         }
-        
-        for folder in pwd.subfolders {
-            if let xcFile = xcFile(in: folder) {
-                return xcFile
-            }
+
+        if let xcodeProj = xcodeProjFile(in: pwd) {
+            return xcodeProj
         }
         
         return nil
     }
-    
-    private static func xcFile(in folder: Folder) -> File? {
-        if let rootXCWorkspace = folder.files.first(where: filter(forTargetExtension: xcworkspace)) {
+
+    private static func xcWorkspaceFile(in folder: Folder) -> File? {
+        return file(in: folder, fileExtension: xcworkspace)
+    }
+
+    private static func xcodeProjFile(in folder: Folder) -> File? {
+        return file(in: folder, fileExtension: xcodeproj)
+    }
+
+    private static func file(in folder: Folder, fileExtension: String) -> File? {
+        if let rootXCWorkspace = folder.files.first(where: filter(forTargetExtension: fileExtension)) {
             return rootXCWorkspace
         }
-        
-        if let rootXCodeProj = folder.files.first(where: filter(forTargetExtension: xcodeproj)) {
-            return rootXCodeProj
+
+        for subFolder in folder.subfolders {
+            if let subFolderXCWorkspace = subFolder.files.first(where: filter(forTargetExtension: fileExtension)) {
+                return subFolderXCWorkspace
+            }
         }
-        
+
         return nil
     }
     

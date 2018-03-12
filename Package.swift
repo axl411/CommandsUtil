@@ -13,14 +13,15 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/johnsundell/files.git"
+            url: "https://github.com/johnsundell/files.git",
+            from: "2.0.0"
         )
     ],
     targets: [
         .target(
             name: "CommandsUtil",
-            path: "Sources",
-            dependencies: ["Files"]
+            dependencies: ["Files"],
+            path: "Sources"
         ),
         .testTarget(
             name: "CommandsUtilTests",
