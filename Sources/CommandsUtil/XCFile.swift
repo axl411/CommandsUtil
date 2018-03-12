@@ -38,6 +38,7 @@ public struct XCFile {
         }
 
         for subFolder in folder.subfolders {
+            guard subFolder.extension != xcodeproj && subFolder.extension != xcworkspace else { continue }
             if let subFolderXCFile = subFolder.subfolders.first(where: filter(forTargetExtension: fileExtension)) {
                 return subFolderXCFile
             }

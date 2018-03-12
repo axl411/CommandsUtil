@@ -39,6 +39,13 @@ class XCFileTests: XCTestCase {
             XCFile.target(in: workingDir)!.path,
             (workingDir.path as NSString).appendingPathComponent(xcodeprojFileName).appending("/")
         )
+
+        let folder = workingDir.subfolders.first { $0.name == xcodeprojFileName }!
+        _ = try! folder.createSubfolder(named: xcworkspaceFileName)
+        XCTAssertEqual(
+            XCFile.target(in: workingDir)!.path,
+            (workingDir.path as NSString).appendingPathComponent(xcodeprojFileName).appending("/")
+        )
     }
     
     func testXCFileFindXCWorkspaceInPWD() {
