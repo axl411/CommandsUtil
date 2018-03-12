@@ -12,7 +12,7 @@ public struct XCFile {
     public static let xcodeproj = "xcodeproj"
     public static let xcworkspace = "xcworkspace"
     
-    public static func target(in pwd: Folder) -> File? {
+    public static func target(in pwd: Folder) -> Folder? {
         if let xcWorkspace = xcWorkspaceFile(in: pwd) {
             return xcWorkspace
         }
@@ -24,31 +24,31 @@ public struct XCFile {
         return nil
     }
 
-    private static func xcWorkspaceFile(in folder: Folder) -> File? {
-        return file(in: folder, fileExtension: xcworkspace)
+    private static func xcWorkspaceFile(in folder: Folder) -> Folder? {
+        return xcFile(in: folder, fileExtension: xcworkspace)
     }
 
-    private static func xcodeProjFile(in folder: Folder) -> File? {
-        return file(in: folder, fileExtension: xcodeproj)
+    private static func xcodeProjFile(in folder: Folder) -> Folder? {
+        return xcFile(in: folder, fileExtension: xcodeproj)
     }
 
-    private static func file(in folder: Folder, fileExtension: String) -> File? {
-        if let rootXCWorkspace = folder.files.first(where: filter(forTargetExtension: fileExtension)) {
-            return rootXCWorkspace
+    private static func xcFile(in folder: Folder, fileExtension: String) -> Folder? {
+        if let xcFile = folder.subfolders.first(where: filter(forTargetExtension: fileExtension)) {
+            return xcFile
         }
 
         for subFolder in folder.subfolders {
-            if let subFolderXCWorkspace = subFolder.files.first(where: filter(forTargetExtension: fileExtension)) {
-                return subFolderXCWorkspace
+            if let subFolderXCFile = subFolder.subfolders.first(where: filter(forTargetExtension: fileExtension)) {
+                return subFolderXCFile
             }
         }
 
         return nil
     }
     
-    private static func filter(forTargetExtension targetExtension: String) -> (File) -> Bool {
-        return { (file: File) in
-            guard let fileExtension = file.extension else { return false }
+    private static func filter(forTargetExtension targetExtension: String) -> (Folder) -> Bool {
+        return { (folder: Folder) in
+            guard let fileExtension = folder.extension else { return false }
             return fileExtension == targetExtension
         }
     }
