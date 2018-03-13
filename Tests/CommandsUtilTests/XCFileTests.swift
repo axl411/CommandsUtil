@@ -20,6 +20,7 @@ class XCFileTests: XCTestCase {
     let example = "example"
     lazy var xcodeprojFileName = (example as NSString).appendingPathExtension(XCFile.xcodeproj)!
     lazy var xcworkspaceFileName = (example as NSString).appendingPathExtension(XCFile.xcworkspace)!
+    lazy var playgroundFileName = (example as NSString).appendingPathExtension(XCFile.playground)!
     
     override
     static func setUp() {
@@ -42,6 +43,13 @@ class XCFileTests: XCTestCase {
 
         let folder = workingDir.subfolders.first { $0.name == xcodeprojFileName }!
         _ = try! folder.createSubfolder(named: xcworkspaceFileName)
+        XCTAssertEqual(
+            XCFile.target(in: workingDir)!.path,
+            (workingDir.path as NSString).appendingPathComponent(xcodeprojFileName).appending("/")
+        )
+
+        let playground = try! workingDir.createSubfolder(named: "example.playground")
+        _ = try! playground.createSubfolder(named: xcworkspaceFileName)
         XCTAssertEqual(
             XCFile.target(in: workingDir)!.path,
             (workingDir.path as NSString).appendingPathComponent(xcodeprojFileName).appending("/")

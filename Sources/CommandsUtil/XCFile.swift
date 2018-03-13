@@ -11,6 +11,7 @@ import Files
 public struct XCFile {
     public static let xcodeproj = "xcodeproj"
     public static let xcworkspace = "xcworkspace"
+    public static let playground = "playground"
     
     public static func target(in pwd: Folder) -> Folder? {
         if let xcWorkspace = xcWorkspaceFile(in: pwd) {
@@ -38,7 +39,10 @@ public struct XCFile {
         }
 
         for subFolder in folder.subfolders {
-            guard subFolder.extension != xcodeproj && subFolder.extension != xcworkspace else { continue }
+            guard subFolder.extension != xcodeproj
+                && subFolder.extension != xcworkspace
+                && subFolder.extension != playground
+                else { continue }
             if let subFolderXCFile = subFolder.subfolders.first(where: filter(forTargetExtension: fileExtension)) {
                 return subFolderXCFile
             }
